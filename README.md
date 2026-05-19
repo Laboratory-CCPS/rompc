@@ -4,19 +4,27 @@ This code accompanies the paper *A Condensed and Efficient Interior Point Solver
 It provides a C implementation of an interior point solver tailored to reduced-order model predictive control (MPC) as well as the code to reproduce the results presented in the aforementioned paper.
 
 The following optimisation problem is solved:
-```math
-\mathscr{P}_N(x,\ \tilde z): \qquad \min_{\alpha,\ \tau} x_N^T P_f x_N + \sum_{k=0}^{N-1} x_k^T Q_c x_k + u_k^T R_c u_k \\[1em]
-\mathrm{s.t.}
-    \begin{array}{rll}
-        x_0 & = x \\
-        x_{k+1} & = A x_k + B u_k & k = 0,\ \ldots,\ N-1\\
-        u_k & = K x_k + z_k & k = 0,\ \ldots,\ N-1\\
-        G_x x_k & \leq f_x & k = 0,\ \ldots,\ N-1\\
-        G_f x_N & \leq f_f \\
-        G_u u_k & \leq f_u & k = 0,\ \ldots,\ N-1\\
-    \end{array}\\[1em]
-    z = U \alpha + \tau \xi + (1 - \tau) \tilde z \qquad \mathrm{with} \quad  z = (z_0^T \ \ldots \ z_{N-1}^T)^T
-```
+
+$$
+\mathscr{P}_N(x,\ \tilde z): \qquad \min_{\alpha,\ \tau} x_N^T P_f x_N + \sum_{k=0}^{N-1} x_k^T Q_c x_k + u_k^T R_c u_k
+$$
+
+$$
+\mathrm{s.t.}\hspace{1em}
+\begin{array}{rll}
+    x_0 & = x \\
+    x_{k+1} & = A x_k + B u_k & k = 0,\ \ldots,\ N-1\\
+    u_k & = K x_k + z_k & k = 0,\ \ldots,\ N-1\\
+    G_x x_k & \leq f_x & k = 0,\ \ldots,\ N-1\\
+    G_f x_N & \leq f_f \\
+    G_u u_k & \leq f_u & k = 0,\ \ldots,\ N-1\\
+\end{array}
+$$
+
+$$
+z = U \alpha + \tau \xi + (1 - \tau) \tilde z \qquad \mathrm{with} \quad  z = (z_0^T \ \ldots \ z_{N-1}^T)^T
+$$
+
 - Non-fixed parameters (MPC application):
     - The current (measured) state $x$ (that must also obey the state constraints described below).
     - An initial admissible guess $\tilde z$ for the non-reduced optimisation variable (see below).
@@ -29,12 +37,12 @@ The following optimisation problem is solved:
     - The definition of the subspace $(U,\ \xi)$ (see below) used for order-reduction.
 - Optimisation variables:
     - $z \in \mathbb{R}^{Nm}$ is the non-reduced optimisation variable consisting of all input values (before adding the output of the stabilising feedback $K$) for all time steps of the prediction horizon.
-    - The order-reduction is achieved by constraining $z$ to an $r$-dimensional affine set described by $U$ and $\xi$, $\{U p + \xi\ | \ p  \in \mathbb{R}^r \}$
+    - The order-reduction is achieved by constraining $z$ to an $r$-dimensional affine set described by $U$ and $\xi$, $\\{U p + \xi\ | \ p  \in \mathbb{R}^r \\}$
     - Furthermore, to provide feasibility and stability guarantees for the reduced-order problem, an initial admissible guess $\tilde z$ for the non-reduced optimisation variable is incorporated with an additional degree of freedom [2].
         In this setup the non-reduced optimisation variable is given by
-        ```math
-        z = U \alpha + \tau \xi + (1 - \tau) \tilde z
-        ```
+
+        $z = U \alpha + \tau \xi + (1 - \tau) \tilde z$
+
         with $\alpha \in \mathbb{R}^{r}$ and $\tau \in \mathbb{R}$ being the optimisation variables for the reduced-order problem $\mathscr{P}_N(x,\ \tilde z)$.
 
 
