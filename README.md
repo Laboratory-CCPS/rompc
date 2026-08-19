@@ -59,8 +59,11 @@ $$
     If no compiler is selected and no compiler is offered for selection also,
     the (free) Matlab-Add-On `MATLAB Support for MinGW-w64 C/C++/Fortran Compiler` can be installed to provide one.
 
-- Yalmip including the MOSEK solver must be installed.
+- [Yalmip](https://yalmip.github.io/) including the [MOSEK solver](https://www.mosek.com/) must be installed.
     (This is not necessary for compiling and using our solver, but to run the example that reproduces the results presented in [1].)
+
+- To generate the problem data, using the method presented in [2], the Matlab toolbox [MPT3](https://www.mpt3.org) must be installed.
+    Alternatively the problem data is also provided in `six_masses_condensed.mat`.
 
 
 ### Run the example
@@ -76,7 +79,14 @@ $$
         The mex files are stored in the `./mex` folder, that initially only contains the m-files that
         provide the documentation.
 
-2. Run the example
+2. (optional) Generating the problem data (Must be done once.)
+    - Open the root of this repository in Matlab.
+    - Run the script `six_masses_condensed.m`.
+        (This script requires MPT3, see above.)
+
+        This will overwrite the provided file `six_masses_condensed.mat` with an equivalent (but not necessarily identical) representation of the problem data.
+
+3. Run the example
     - Open the root of this repository in Matlab.
     - Add the path `./mex` to the Matlab search path
         ```matlab
